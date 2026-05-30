@@ -3,7 +3,7 @@
 Aplicativo estático altamente visual para comparar salário médio, aluguel, custo de vida e poupança real por província espanhola.
 
 Abra `index.html` no navegador. O app não precisa de build nem servidor.
-
+Access: https://jadsonbarros01-ship-it.github.io/Real-wages/
 ## Ferramentas
 
 - Simulador de metros quadrados e quantidade de pessoas.
