@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="pt">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mapa dos Salários Reais</title>
+    <meta name="theme-color" content="#12120f" />
+    <meta name="description" content="Mapa visual para comparar salários reais, aluguel, custo de vida e poupança por região." />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Salários Reais" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="cover" aria-label="Capa do aplicativo">
+        <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1800&q=80" alt="Mapa físico sobre uma mesa com marcações de viagem" />
+        <div class="cover-overlay">
+          <p class="eyebrow" id="countryEyebrow">Espanha, 2026</p>
+          <h1 id="appTitle">Mapa dos Salários Reais na Espanha</h1>
+        </div>
+      </section>
+
+      <section class="global-controls" aria-label="Escolhas globais">
+        <label class="field">
+          <span>País</span>
+          <select id="countrySelect">
+            <option value="spain">Espanha</option>
+            <option value="portugal">Portugal</option>
+            <option value="france">França</option>
+            <option value="germany">Alemanha</option>
+            <option value="italy">Itália</option>
+            <option value="netherlands">Países Baixos</option>
+            <option value="uk">Reino Unido</option>
+            <option value="brazil">Brasil</option>
+          </select>
+        </label>
+        <label class="theme-switch">
+          <input id="themeToggle" type="checkbox" />
+          <span>Tema claro</span>
+        </label>
+        <button id="installApp" class="install-button" type="button" hidden>Instalar app</button>
+      </section>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow" id="scopeEyebrow">Províncias e regiões, 2026</p>
+          <h1 id="heroTitle">Onde a qualidade de vida é realmente melhor?</h1>
+          <p class="lead">
+            Salário médio não paga aluguel sozinho. Este painel cruza salários médios, aluguel por m²,
+            custo de vida e poupança real estimada por região para revelar onde a qualidade de vida fica melhor.
+          </p>
+        </div>
+        <div class="hero-panel" aria-label="Resumo nacional">
+          <div>
+            <span class="panel-label">Melhor equilíbrio</span>
+            <strong id="heroBest">-</strong>
+          </div>
+          <div>
+            <span class="panel-label">Maior salário bruto</span>
+            <strong id="heroSalary">-</strong>
+          </div>
+          <div>
+            <span class="panel-label">Maior pressão de aluguel</span>
+            <strong id="heroRent">-</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="controls" aria-label="Controles do cenário">
+        <div>
+          <p class="section-kicker">Cenário</p>
+          <h2>Quanto sobra no fim do mês?</h2>
+        </div>
+          <div class="segmented" role="group" aria-label="Tamanho da casa">
+          <button class="scenario active" data-size="45">Pessoa solo · 45 m²</button>
+          <button class="scenario" data-size="70">Casal/casa média · 70 m²</button>
+          <button class="scenario" data-size="90">Família · 90 m²</button>
+        </div>
+      </section>
+
+      <section class="planner" aria-label="Calculadora pessoal">
+        <article class="calculator">
+          <div class="card-head compact">
+            <div>
+              <p class="section-kicker">Calculadora</p>
+              <h2>Simule sua vida mensal</h2>
+            </div>
+          </div>
+          <div class="control-grid">
+            <label class="field">
+              <span>Metros quadrados</span>
+              <input id="metersRange" type="range" min="25" max="140" value="45" />
+              <input id="metersInput" type="number" min="25" max="200" value="45" />
+            </label>
+            <label class="field">
+              <span>Pessoas na casa</span>
+              <input id="peopleInput" type="number" min="1" max="8" value="1" />
+            </label>
+            <label class="field">
+              <span>Salário líquido mensal da casa</span>
+              <input id="salaryOverride" type="number" min="0" step="50" placeholder="Auto por província" />
+            </label>
+            <label class="field">
+              <span>Aluguel mensal</span>
+              <input id="rentOverride" type="number" min="0" step="25" placeholder="Auto por m²" />
+            </label>
+            <label class="field">
+              <span>Custo mensal sem aluguel</span>
+              <input id="costOverride" type="number" min="0" step="25" placeholder="Auto por pessoas" />
+            </label>
+          </div>
+        </article>
+
+        <article class="decision-card">
+          <div class="card-head compact">
+            <div>
+              <p class="section-kicker">Decisão</p>
+              <h2>Onde dá para prosperar?</h2>
+            </div>
+          </div>
+          <div class="decision-stats">
+            <div>
+              <span class="panel-label" id="selectedLabel">Região selecionada</span>
+              <strong id="selectedProvince">-</strong>
+            </div>
+            <div>
+              <span class="panel-label">Sobra da casa</span>
+              <strong id="selectedSavings">-</strong>
+            </div>
+            <div>
+              <span class="panel-label" id="reserveLabel">Sobra em 6 meses</span>
+              <strong id="reserveMonths">-</strong>
+            </div>
+          </div>
+          <div class="control-grid filters">
+            <label class="field">
+              <span>Poupança mínima mensal</span>
+              <input id="targetSavings" type="number" min="-1000" step="50" value="300" />
+            </label>
+            <label class="field">
+              <span>Aluguel máximo do salário</span>
+              <input id="maxRentShare" type="number" min="10" max="80" step="5" value="35" />
+            </label>
+            <label class="field">
+              <span>Projetar sobra por quantos meses</span>
+              <input id="reserveTarget" type="number" min="1" max="36" step="1" value="6" />
+            </label>
+            <label class="field">
+              <span>Critério do ranking</span>
+              <select id="rankMode">
+                <option value="balanced">Melhor equilíbrio</option>
+                <option value="savings">Maior sobra</option>
+                <option value="rent">Menor aluguel/renda</option>
+                <option value="risk">Menor risco</option>
+              </select>
+            </label>
+          </div>
+          <p id="decisionAdvice" class="advice">-</p>
+        </article>
+      </section>
+
+      <section class="dashboard">
+        <article class="map-card">
+          <div class="card-head">
+            <div>
+              <p class="section-kicker">Mapa</p>
+              <h2 id="mapTitle">Poupança real mensal por região</h2>
+            </div>
+            <div class="legend">
+              <span>Pressão</span>
+              <i class="swatch low"></i>
+              <i class="swatch mid"></i>
+              <i class="swatch high"></i>
+              <span>Folga</span>
+            </div>
+          </div>
+          <svg id="salaryMap" class="salary-map" viewBox="0 0 800 745" role="img" aria-label="Mapa esquemático de regiões"></svg>
+        </article>
+
+        <aside class="rank-card">
+          <div class="card-head compact">
+            <div>
+              <p class="section-kicker">Ranking</p>
+              <h2>Onde viver melhor</h2>
+            </div>
+          </div>
+          <div id="ranking" class="ranking"></div>
+        </aside>
+      </section>
+
+      <section class="insight-grid">
+        <article class="insight">
+          <span class="metric" id="bestSavings">-</span>
+          <h3>Maior poupança real</h3>
+          <p id="bestSavingsText">-</p>
+        </article>
+        <article class="insight">
+          <span class="metric" id="rentTrap">-</span>
+          <h3>Armadilha do aluguel</h3>
+          <p id="rentTrapText">-</p>
+        </article>
+        <article class="insight">
+          <span class="metric" id="quietWinner">-</span>
+          <h3>Vencedor silencioso</h3>
+          <p id="quietWinnerText">-</p>
+        </article>
+      </section>
+
+      <section class="comparison">
+        <div class="card-head">
+          <div>
+            <p class="section-kicker">Detalhe</p>
+            <h2>Salário, aluguel, custo de vida e sobra</h2>
+          </div>
+          <label class="search">
+            <span>Filtrar</span>
+            <input id="search" type="search" placeholder="Madrid, Jaén, Barcelona..." />
+          </label>
+          <label class="toggle">
+            <input id="onlyViable" type="checkbox" />
+            <span>Só opções viáveis</span>
+          </label>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th id="regionHeader">Região</th>
+                <th>Renda líquida</th>
+                <th>Aluguel</th>
+                <th>Custo vida</th>
+                <th>Poupança real</th>
+                <th>Esforço</th>
+                <th>Qualidade</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="method">
+        <div>
+          <p class="section-kicker">Metodologia</p>
+          <h2>Como o índice foi calculado</h2>
+        </div>
+        <p>
+          Poupança real = salário líquido mensal estimado - aluguel mensal - custo de vida não-aluguel.
+          O aluguel usa o preço provincial por m² de abril de 2026 e o tamanho escolhido. O custo de vida é uma
+          calibração provincial a partir de índices Numbeo de maio de 2026. Onde não há salário oficial provincial
+          direto, o app modela o salário a partir da referência autonómica INE e de prémios locais de mercado. O ranking combina poupança,
+          esforço de aluguel e poder de compra residual.
+        </p>
+        <div class="sources">
+          <a href="https://www.ine.es/dyngs/Prensa/EAES2024.htm">INE EAES 2024</a>
+          <a href="https://www.idealista.com/sala-de-prensa/informes-precio-vivienda/alquiler/">Idealista aluguel abril 2026</a>
+          <a href="https://www.numbeo.com/cost-of-living/country_result.jsp?country=Spain">Numbeo Espanha maio 2026</a>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "name": "Mapa dos Salários Reais",
+  "short_name": "Salários Reais",
+  "description": "Compare salário, aluguel, custo de vida e poupança real por país e região.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#12120f",
+  "theme_color": "#12120f",
+  "categories": ["finance", "productivity", "travel"],
+  "lang": "pt",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
